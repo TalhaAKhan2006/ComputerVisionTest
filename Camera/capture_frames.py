@@ -3,8 +3,8 @@ import time
 
 import cv2
 
-RECORD_SECONDS = 10
-TARGET_FPS = 10
+RECORD_SECONDS = 20
+TARGET_FPS = 5
 OUTPUT_DIR = Path(__file__).parent / "frames"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -12,7 +12,7 @@ for frame_path in OUTPUT_DIR.iterdir():
     if frame_path.is_file():
         frame_path.unlink()
 
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 camera.set(cv2.CAP_PROP_FPS, TARGET_FPS)
 
 if not camera.isOpened():

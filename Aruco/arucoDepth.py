@@ -1,13 +1,20 @@
 import cv2
 import numpy as np
+import yaml
+
+# Load calibration data with Python's yaml
+with open(r"calibration.yaml") as f:
+    calib = yaml.safe_load(f)
 
 """ 
-Use an approximate camera matrix until calibration data is available.
-The 60-degree horizontal field-of-view assumption is only a rough estimate.
+load your camera’s intrinsic matrix and distortion coefficients from a YAML file
+- camera_matrix is the 3×3 intrinsic parameters matrix.
+- dist_coeffs holds lens distortion parameters.
+- marker_length is the side length of the ArUco marker in meters.
 """
-camera_matrix = None
-dist_coeffs = np.zeros((5, 1), dtype=np.float32)
-marker_length = 0.0195  # meters
+camera_matrix = np.array(calib["camera_matrix"])
+dist_coeffs = np.array(calib["dist_coeff"])
+marker_length = 0.026  # mm
 
 """
 DICT_4X4_50 is a predefined dictionary of ArUco markers.
@@ -20,7 +27,7 @@ parameters = cv2.aruco.DetectorParameters()
 # create a detector instance with default parameters.
 detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 num=0
 
@@ -28,15 +35,6 @@ while True:
     ret, frame = cap.read()
     if not ret:
         break
-
-    if camera_matrix is None:
-        height, width = frame.shape[:2]
-        focal_length = width / (2 * np.tan(np.deg2rad(60) / 2))
-        camera_matrix = np.array([
-            [focal_length, 0, width / 2],
-            [0, focal_length, height / 2],
-            [0, 0, 1]
-        ], dtype=np.float32)
 
     # Detect markers in the frame with detectMarkers method
     corners, ids, _ = detector.detectMarkers(frame)

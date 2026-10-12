@@ -15,7 +15,7 @@ aruco_params = cv2.aruco.DetectorParameters()
 detector = cv2.aruco.ArucoDetector(aruco_dict, aruco_params)
 
 # 3. Start the webcam video capture (0 is usually the default built-in webcam)
-camera = cv2.VideoCapture(2)
+camera = cv2.VideoCapture(1)
 
 print("Starting scanner")
 

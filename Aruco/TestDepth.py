@@ -38,7 +38,7 @@ detector = cv2.aruco.ArucoDetector(
 # CAMERA
 # ---------------------------------------------------------
 
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 
 print("Starting scanner")
 
